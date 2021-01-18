@@ -4,6 +4,6 @@
     <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="csvhelper" Version="20.0.0" />
+    <PackageReference Include="csvhelper" Version="21.0.0" />
   </ItemGroup>
 </Project>

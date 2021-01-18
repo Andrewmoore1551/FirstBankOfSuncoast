@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using CsvHelper;
 
 namespace FirstBankOfSuncoast
 {
@@ -17,44 +20,43 @@ namespace FirstBankOfSuncoast
         static void Main(string[] args)
         {
 
-            var transactions = new List<Transaction>(){
-                new Transaction()
-                {
-                    Account = "checking",
-                    Type = "Deposit",
-                    Amount = 45,
-                    TimeStamp = DateTime.Now,
-                },
+            // var transactions = new List<Transaction>(){
+            //     new Transaction()
+            //     {
+            //         Account = "checking",
+            //         Type = "deposit",
+            //         Amount = 45,
+            //         TimeStamp = DateTime.Now,
+            //     },
 
-              new Transaction()
-              {
-                  Account = "checking",
-                  Type = "Deposit",
-                  Amount = 60,
-                  TimeStamp = DateTime.Now,
-              },
-              new Transaction()
-              {
-                  Account = "checking",
-                  Type = "Deposit",
-                  Amount = 60,
-                  TimeStamp = DateTime.Now,
-              },
+            //   new Transaction()
+            //   {
+            //       Account = "savings",
+            //       Type = "deposit",
+            //       Amount = 60,
+            //       TimeStamp = DateTime.Now,
+            //   },
+            //   new Transaction()
+            //   {
+            //       Account = "checking",
+            //       Type = "withdraw",
+            //       Amount = 10,
+            //       TimeStamp = DateTime.Now,
+            //   },
 
-                };
-
-            // Welcome to the app 
+            //     };
             Console.WriteLine("Welcome to First Bank Of Suncoast");
-            // App Should load past transactions from a file when it first starts(Add later fileReader)
+
+            var fileReader = new StreamReader("transactions.csv");
+            var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+            var transactions = csvReader.GetRecords<Transaction>().ToList();
+            fileReader.Close();
 
             var userHasNotChosenToQuit = false;
-            // While the User hasn’t chosen to QUIT: (Bool is false)
 
             while (userHasNotChosenToQuit == false)
             {
 
-                // Add a List<Transactions>
-                // Display the Menu Options:
                 Console.WriteLine("Deposit");
                 Console.WriteLine("Withdraw");
                 Console.WriteLine("Balance");
@@ -81,7 +83,10 @@ namespace FirstBankOfSuncoast
                         TimeStamp = DateTime.Now,
                     };
                     transactions.Add(newtransaction);
-                    //Write all the transactions to the file (the four lines of code for the fileWriter)
+                    var fileWriter = new StreamWriter("transactions.csv");
+                    var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+                    csvWriter.WriteRecords(transactions);
+                    fileWriter.Close();
                 }
 
                 if (choice == "withdraw")
@@ -110,7 +115,11 @@ namespace FirstBankOfSuncoast
                                 TimeStamp = DateTime.Now,
                             };
                             transactions.Add(newtransaction);
-                            //Write all the transactions to the file (the four lines of code for the fileWriter)
+                            var fileWriter = new StreamWriter("transactions.csv");
+                            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+                            csvWriter.WriteRecords(transactions);
+                            fileWriter.Close();
+
                         }
                     }
                     if (newAccount == "checking")
@@ -135,13 +144,17 @@ namespace FirstBankOfSuncoast
                                 TimeStamp = DateTime.Now,
                             };
                             transactions.Add(newtransaction);
-                            //Write all the transactions to the file (the four lines of code for the fileWriter)
+                            var fileWriter = new StreamWriter("transactions.csv");
+                            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+                            csvWriter.WriteRecords(transactions);
+                            fileWriter.Close();
+
                         }
 
                     }
 
                 }
-                if (choice == "transaction history")
+                if (choice == "history")
                 {
                     Console.WriteLine("Would you like Savings or Checking");
                     var history = Console.ReadLine();
