@@ -163,24 +163,38 @@ namespace FirstBankOfSuncoast
                     }
                 }
 
-                // If (Transaction History)
-                // 	Ask the user if they would like to choose Savings or Checking?
-                // 	If (Savings)
-                // 	Print out the Transaction History for Savings
-                // 	If (Checking)
-                // 	Print out the Transaction History for Checking
+                if (choice == "balance")
+                {
+                    Console.WriteLine("Would you like Savings or Checking?");
+                    var total = Console.ReadLine();
 
-                // If (Balance)
-                // 	Ask the user if they would like to choose Savings or Checking?
-                // 	If (Savings) 
-                // 	See the Balance of the Savings
-                // 	If (Checking)
-                // 	See the Balance of the Checking
+                    if (total == "savings")
+                    {
+                        var findSavings = transactions.Where(money => money.Account == "savings");
+                        var findDeposit = findSavings.Where(money => money.Type == "deposit").Sum(money => money.Amount);
+                        var findWithdraw = findSavings.Where(money => money.Type == "withdraw").Sum(money => money.Amount);
+                        var subtract = findDeposit - findWithdraw;
+                        Console.WriteLine($"Your balance in savings is {subtract}");
+                    }
+                    if (total == "checking")
+                    {
+                        var findChecking = transactions.Where(money => money.Account == "checking");
+                        var findDeposit = findChecking.Where(money => money.Type == "deposit").Sum(money => money.Amount);
+                        var findWithdraw = findChecking.Where(money => money.Type == "withdraw").Sum(money => money.Amount);
+                        var subtract = findDeposit - findWithdraw;
+                        Console.WriteLine($"Your balance in checking is {subtract}");
+                    }
 
-                // If (Quit)
-                // 	Bool is True
+
+                }
+                if (choice == "quit")
+                {
+                    userHasNotChosenToQuit = true;
+                }
+
             }
-            // 11. Say Goodbye
+            Console.WriteLine("Thank you for visiting First Bank Of Suncoast");
+
 
 
 
