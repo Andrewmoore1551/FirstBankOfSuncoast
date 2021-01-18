@@ -110,29 +110,58 @@ namespace FirstBankOfSuncoast
                                 TimeStamp = DateTime.Now,
                             };
                             transactions.Add(newtransaction);
+                            //Write all the transactions to the file (the four lines of code for the fileWriter)
+                        }
+                    }
+                    if (newAccount == "checking")
+                    {
+                        var findChecking = transactions.Where(money => money.Account == "checking");
+                        var findDeposit = findChecking.Where(money => money.Type == "deposit").Sum(money => money.Amount);
+                        var findWithdraw = findChecking.Where(money => money.Type == "withdraw").Sum(money => money.Amount);
+                        var subtract = findDeposit - findWithdraw;
+                        Console.WriteLine("How much would you like to withdraw from checking");
+                        var withdrawAmount = int.Parse(Console.ReadLine());
+                        if (subtract < withdrawAmount)
+                        {
+                            Console.WriteLine("Insufficient funds");
+                        }
+                        if (subtract > withdrawAmount)
+                        {
+                            var newtransaction = new Transaction()
+                            {
+                                Account = "checking",
+                                Amount = withdrawAmount,
+                                Type = "withdraw",
+                                TimeStamp = DateTime.Now,
+                            };
+                            transactions.Add(newtransaction);
+                            //Write all the transactions to the file (the four lines of code for the fileWriter)
                         }
 
                     }
+
                 }
-
-                // case “Withdraw”:
-                // 	Ask the user if they would like to choose Savings or Checking?
-                // 	If (Savings)
-                // 	Ask how much they want to withdraw from savings?
-                // 	-Find savings
-                // 		If there is enough money in account
-                // 			Remove money from savings
-                // Write all the transactions to the file (the four lines of code for the fileWriter)
-                // 		If there isn’t enough money
-                // 			Do not remove money from savings
-
-                // 	If (Checking)
-                // 	Ask how much they want to withdraw from checking?
-                // 			If there is enough money in account
-                // 			Remove money from savings
-                // Write all the transactions to the file (the four lines of code for the fileWriter)
-                // 		If there isn’t 
-                // 			Do not remove money from savings
+                if (choice == "transaction history")
+                {
+                    Console.WriteLine("Would you like Savings or Checking");
+                    var history = Console.ReadLine();
+                    if (history == "savings")
+                    {
+                        var findSavings = transactions.Where(money => money.Account == "savings");
+                        foreach (var save in findSavings)
+                        {
+                            Console.WriteLine($"Your Transaction History: Your {save.Account} was {save.Type} for the amount of {save.Amount}. ");
+                        }
+                    }
+                    if (history == "checking")
+                    {
+                        var findChecking = transactions.Where(money => money.Account == "checking");
+                        foreach (var check in findChecking)
+                        {
+                            Console.WriteLine($"Your Transaction History: Your {check.Account} was {check.Type} for the amount of {check.Amount}. ");
+                        }
+                    }
+                }
 
                 // If (Transaction History)
                 // 	Ask the user if they would like to choose Savings or Checking?
